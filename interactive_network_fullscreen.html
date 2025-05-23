@@ -1,0 +1,160 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100vw;
+                 height: 100vh;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#00274c", "font": {"color": "black"}, "id": "Sabina Akelbek", "label": "Sabina Akelbek", "shape": "dot", "size": 10, "type": "person"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Going to the gym, running, yoga, or team sports", "label": "Exercise", "shape": "dot", "size": 38, "title": "Exercise: 14 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Hiking, nature walks, or outdoor adventures", "label": "Nature Activities", "shape": "dot", "size": 38, "title": "Nature Activities: 14 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Camping, water sports, or rock climbing", "label": "Outdoor Adventure", "shape": "dot", "size": 22, "title": "Outdoor Adventure: 6 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Movies, TV shows, podcasts, or music", "label": "Entertainment", "shape": "dot", "size": 36, "title": "Entertainment: 13 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Traveling, road trips, museums, or cultural activities", "label": "Travel \u0026 Culture", "shape": "dot", "size": 30, "title": "Travel \u0026 Culture: 10 person(s)", "type": "activity"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Carlos Haring", "label": "Carlos Haring", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "McKenzie Hebert", "label": "McKenzie Hebert", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Albert Kang", "label": "Albert Kang", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Lucy Malmud", "label": "Lucy Malmud", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Rose Adler", "label": "Rose Adler", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Lara Kok", "label": "Lara Kok", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Hannah Preisser", "label": "Hannah Preisser", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Noah Shaul", "label": "Noah Shaul", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Jingyou Tan", "label": "Jingyou Tan", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Hodan Ali", "label": "Hodan Ali", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Joshua Brown", "label": "Joshua Brown", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Sylvia Pesch", "label": "Sylvia Pesch", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Albert Zhang", "label": "Albert Zhang", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Shiyi Zhang", "label": "Shiyi Zhang", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Eliana Dietrich", "label": "Eliana Dietrich", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Ryan Kwok", "label": "Ryan Kwok", "shape": "dot", "size": 10, "type": "person"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Hanrui Yu", "label": "Hanrui Yu", "shape": "dot", "size": 10, "type": "person"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Playing music, painting, photography, or writing", "label": "Creative Arts", "shape": "dot", "size": 20, "title": "Creative Arts: 5 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Learning new languages or creative hobbies", "label": "Learning \u0026 Hobbies", "shape": "dot", "size": 22, "title": "Learning \u0026 Hobbies: 6 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Board games, chess, or video games", "label": "Games", "shape": "dot", "size": 28, "title": "Games: 9 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Coffee shops, dining out, or social events", "label": "Dining \u0026 Socializing", "shape": "dot", "size": 32, "title": "Dining \u0026 Socializing: 11 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Social media or content creation", "label": "Social Media", "shape": "dot", "size": 14, "title": "Social Media: 2 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Volunteering or community service", "label": "Volunteering", "shape": "dot", "size": 18, "title": "Volunteering: 4 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Cooking or baking", "label": "Cooking", "shape": "dot", "size": 28, "title": "Cooking: 9 person(s)", "type": "activity"}, {"color": "#00274c", "font": {"color": "black"}, "id": "Madeline Boss", "label": "Madeline Boss", "shape": "dot", "size": 10, "type": "person"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Going to concerts!", "label": "Concerts", "shape": "dot", "size": 12, "title": "Concerts: 1 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Reading", "label": "Reading", "shape": "dot", "size": 26, "title": "Reading: 8 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Crocheting", "label": "Crocheting", "shape": "dot", "size": 12, "title": "Crocheting: 1 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Gardening", "label": "Gardening", "shape": "dot", "size": 18, "title": "Gardening: 4 person(s)", "type": "activity"}, {"color": "#ffcb05", "font": {"color": "black"}, "id": "Meditation, relaxation, or spa visits", "label": "Meditation", "shape": "dot", "size": 14, "title": "Meditation: 2 person(s)", "type": "activity"}]);
+                  edges = new vis.DataSet([{"from": "Sabina Akelbek", "to": "Going to the gym, running, yoga, or team sports", "width": 1}, {"from": "Sabina Akelbek", "to": "Hiking, nature walks, or outdoor adventures", "width": 1}, {"from": "Sabina Akelbek", "to": "Camping, water sports, or rock climbing", "width": 1}, {"from": "Sabina Akelbek", "to": "Movies, TV shows, podcasts, or music", "width": 1}, {"from": "Sabina Akelbek", "to": "Traveling, road trips, museums, or cultural activities", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Carlos Haring", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "McKenzie Hebert", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Albert Kang", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Lucy Malmud", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Rose Adler", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Lara Kok", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Hannah Preisser", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Noah Shaul", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Jingyou Tan", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Hodan Ali", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Joshua Brown", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Sylvia Pesch", "width": 1}, {"from": "Going to the gym, running, yoga, or team sports", "to": "Albert Zhang", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Carlos Haring", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "McKenzie Hebert", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Shiyi Zhang", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Rose Adler", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Lara Kok", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Hannah Preisser", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Noah Shaul", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Jingyou Tan", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Hodan Ali", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Eliana Dietrich", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Ryan Kwok", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Sylvia Pesch", "width": 1}, {"from": "Hiking, nature walks, or outdoor adventures", "to": "Albert Zhang", "width": 1}, {"from": "Camping, water sports, or rock climbing", "to": "Carlos Haring", "width": 1}, {"from": "Camping, water sports, or rock climbing", "to": "McKenzie Hebert", "width": 1}, {"from": "Camping, water sports, or rock climbing", "to": "Rose Adler", "width": 1}, {"from": "Camping, water sports, or rock climbing", "to": "Noah Shaul", "width": 1}, {"from": "Camping, water sports, or rock climbing", "to": "Joshua Brown", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Carlos Haring", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Albert Kang", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Lucy Malmud", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Shiyi Zhang", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Rose Adler", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Lara Kok", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Jingyou Tan", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Eliana Dietrich", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Ryan Kwok", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Sylvia Pesch", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Hanrui Yu", "width": 1}, {"from": "Movies, TV shows, podcasts, or music", "to": "Albert Zhang", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Carlos Haring", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "McKenzie Hebert", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Shiyi Zhang", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Rose Adler", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Lara Kok", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Jingyou Tan", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Eliana Dietrich", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Ryan Kwok", "width": 1}, {"from": "Traveling, road trips, museums, or cultural activities", "to": "Sylvia Pesch", "width": 1}, {"from": "Carlos Haring", "to": "Playing music, painting, photography, or writing", "width": 1}, {"from": "Carlos Haring", "to": "Learning new languages or creative hobbies", "width": 1}, {"from": "Carlos Haring", "to": "Board games, chess, or video games", "width": 1}, {"from": "Carlos Haring", "to": "Coffee shops, dining out, or social events", "width": 1}, {"from": "Carlos Haring", "to": "Social media or content creation", "width": 1}, {"from": "Carlos Haring", "to": "Volunteering or community service", "width": 1}, {"from": "Carlos Haring", "to": "Cooking or baking", "width": 1}, {"from": "Playing music, painting, photography, or writing", "to": "Shiyi Zhang", "width": 1}, {"from": "Playing music, painting, photography, or writing", "to": "Noah Shaul", "width": 1}, {"from": "Playing music, painting, photography, or writing", "to": "Sylvia Pesch", "width": 1}, {"from": "Playing music, painting, photography, or writing", "to": "Albert Zhang", "width": 1}, {"from": "Learning new languages or creative hobbies", "to": "Rose Adler", "width": 1}, {"from": "Learning new languages or creative hobbies", "to": "Lara Kok", "width": 1}, {"from": "Learning new languages or creative hobbies", "to": "Noah Shaul", "width": 1}, {"from": "Learning new languages or creative hobbies", "to": "Joshua Brown", "width": 1}, {"from": "Learning new languages or creative hobbies", "to": "Eliana Dietrich", "width": 1}, {"from": "Board games, chess, or video games", "to": "McKenzie Hebert", "width": 1}, {"from": "Board games, chess, or video games", "to": "Albert Kang", "width": 1}, {"from": "Board games, chess, or video games", "to": "Madeline Boss", "width": 1}, {"from": "Board games, chess, or video games", "to": "Joshua Brown", "width": 1}, {"from": "Board games, chess, or video games", "to": "Eliana Dietrich", "width": 1}, {"from": "Board games, chess, or video games", "to": "Ryan Kwok", "width": 1}, {"from": "Board games, chess, or video games", "to": "Hanrui Yu", "width": 1}, {"from": "Board games, chess, or video games", "to": "Albert Zhang", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Lucy Malmud", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Shiyi Zhang", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Rose Adler", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Lara Kok", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Jingyou Tan", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Hodan Ali", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Joshua Brown", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Eliana Dietrich", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Ryan Kwok", "width": 1}, {"from": "Coffee shops, dining out, or social events", "to": "Hanrui Yu", "width": 1}, {"from": "Social media or content creation", "to": "Jingyou Tan", "width": 1}, {"from": "Volunteering or community service", "to": "Lara Kok", "width": 1}, {"from": "Volunteering or community service", "to": "Hodan Ali", "width": 1}, {"from": "Volunteering or community service", "to": "Ryan Kwok", "width": 1}, {"from": "Cooking or baking", "to": "McKenzie Hebert", "width": 1}, {"from": "Cooking or baking", "to": "Rose Adler", "width": 1}, {"from": "Cooking or baking", "to": "Madeline Boss", "width": 1}, {"from": "Cooking or baking", "to": "Lara Kok", "width": 1}, {"from": "Cooking or baking", "to": "Jingyou Tan", "width": 1}, {"from": "Cooking or baking", "to": "Hodan Ali", "width": 1}, {"from": "Cooking or baking", "to": "Eliana Dietrich", "width": 1}, {"from": "Cooking or baking", "to": "Ryan Kwok", "width": 1}, {"from": "McKenzie Hebert", "to": "Going to concerts!", "width": 1}, {"from": "Rose Adler", "to": "Reading", "width": 1}, {"from": "Reading", "to": "Madeline Boss", "width": 1}, {"from": "Reading", "to": "Lara Kok", "width": 1}, {"from": "Reading", "to": "Hannah Preisser", "width": 1}, {"from": "Reading", "to": "Hodan Ali", "width": 1}, {"from": "Reading", "to": "Eliana Dietrich", "width": 1}, {"from": "Reading", "to": "Sylvia Pesch", "width": 1}, {"from": "Reading", "to": "Albert Zhang", "width": 1}, {"from": "Madeline Boss", "to": "Crocheting", "width": 1}, {"from": "Lara Kok", "to": "Gardening", "width": 1}, {"from": "Gardening", "to": "Noah Shaul", "width": 1}, {"from": "Gardening", "to": "Jingyou Tan", "width": 1}, {"from": "Gardening", "to": "Sylvia Pesch", "width": 1}, {"from": "Joshua Brown", "to": "Meditation, relaxation, or spa visits", "width": 1}, {"from": "Meditation, relaxation, or spa visits", "to": "Sylvia Pesch", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"layout": {"improvedLayout": true}, "physics": {"enabled": true, "solver": "barnesHut", "barnesHut": {"gravitationalConstant": -30000, "centralGravity": 0.3, "springLength": 120, "springConstant": 0.04, "damping": 0.3, "avoidOverlap": 1}, "stabilization": {"enabled": true, "iterations": 100, "updateInterval": 10, "fit": true}}, "edges": {"smooth": {"type": "dynamic"}}, "nodes": {"shape": "dot", "font": {"size": 12}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+network.on("selectNode", function (params) {
+  var selectedNodeId = params.nodes[0];
+  var connectedNodes = network.getConnectedNodes(selectedNodeId);
+  connectedNodes.push(selectedNodeId);
+  var visible = new Set(connectedNodes);
+
+  nodes.forEach(function (node) {
+    nodes.update({ id: node.id, opacity: visible.has(node.id) ? 1 : 0.1 });
+  });
+
+  edges.forEach(function (edge) {
+    var visibleEdge = visible.has(edge.from) && visible.has(edge.to);
+    edges.update({ id: edge.id, color: { opacity: visibleEdge ? 1 : 0.05 } });
+  });
+});
+
+network.on("deselectNode", function () {
+  nodes.forEach(function (node) {
+    nodes.update({ id: node.id, opacity: 1 });
+  });
+  edges.forEach(function (edge) {
+    edges.update({ id: edge.id, color: { opacity: 1 } });
+  });
+});
+
+network.on("hoverNode", function (params) {
+  nodes.update({ id: params.node, font: { size: 16, color: "black", bold: true } });
+});
+network.on("blurNode", function (params) {
+  nodes.update({ id: params.node, font: { size: 12, color: "black", bold: false } });
+});
+
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
